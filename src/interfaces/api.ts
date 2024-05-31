@@ -1,5 +1,9 @@
+// api.ts
+
+// Define uma interface para padronizar a estrutura das respostas da API
 export interface IAPIResponse<T> {
-    data: T | null;
-    error: null | string;
-    message: null | string;
+	success: boolean;
+	message?: string;
+	data?: T;
+	error?: string;
 }

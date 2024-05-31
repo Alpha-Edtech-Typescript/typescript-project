@@ -1,8 +1,14 @@
+// logoutRoutes.ts
+
+// Importações
 import { Router } from "express";
 import { logout } from "../controllers/loginController";
 
-const router : Router = Router();
+// Cria um novo roteador
+const router: Router = Router();
 
-router.delete("/" , logout);
+// Define a rota DELETE para logout e associa a função de logout do controlador
+router.delete("/", logout);
 
+// Exporta o roteador criado para uso em outros arquivos
 export default router;

@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express, { Express } from "express";
 import cookieParser from "cookie-parser"; 
 import routes from "./routes/routes";
-import pool from "./database/connection";
+import { pool } from "./database/connection";
 
 dotenv.config();
 

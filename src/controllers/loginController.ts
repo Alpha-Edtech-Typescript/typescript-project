@@ -12,7 +12,7 @@ export const authenticate = async (req: Request, res: Response) => {
 
     const { auth, token } = await loginServices.authenticateUser(
       username,
-      password
+      password,
     );
 
     if (auth) {

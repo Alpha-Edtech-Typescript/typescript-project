@@ -10,6 +10,6 @@ export function validatePassword(password: string): boolean {
 }
 
 export function validateName(name: string): boolean {
-  const cleanedName = name.replace(/\s+/g, '');
+  const cleanedName = name.replace(/\s+/g, "");
   return /^[A-Za-z\s]+$/.test(name) && cleanedName.length >= 4;
 }

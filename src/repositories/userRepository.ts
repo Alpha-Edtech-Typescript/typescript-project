@@ -1,11 +1,12 @@
 import { pool } from "../database/connection";
+import { IUser } from "../interfaces/user";
 
 
 
-export const createUser = async (username: string, email: string, first_name:string, last_name: string, password:string, squad:number, is_admin:boolean ) => {
-    const query = 'INSERT INTO users (username, email, first_name, last_name, password, squad, is_admin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+export const createUser = async (username: string, email: string, first_name:string, last_name: string, password:string, squad:string) => {
+    const query = 'INSERT INTO users (username, email, first_name, last_name, password, squad) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
     try {
-        const result = await pool.query(query, [username, email, first_name, last_name, password, squad, is_admin]);
+        const result = await pool.query(query, [username, email, first_name, last_name, password, squad]);
         return result.rows[0];
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
@@ -34,3 +35,14 @@ export const getUserByEmail = async (email: string) =>{
         throw new Error('Falha ao localizar o usuário pelo email');
     } 
 }
+
+export const getUserById = async (userId: string) => {
+    const query = 'SELECT * FROM users WHERE id=$1';
+    try {
+        const result = await pool.query(query, [userId]);
+        return result.rows[0] as IUser;
+    } catch (error) {
+        console.error('Erro ao buscar usuário pelo ID:', error);
+        throw new Error('Falha ao buscar usuário pelo ID');
+    }
+};

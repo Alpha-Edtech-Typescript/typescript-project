@@ -3,7 +3,7 @@ import { IUser } from "../interfaces/user";
 import { validateEmail, validatePassword, validateName } from "../utils/validation";
 import { hashPassword } from "../utils/hashPassword";
 
-export const createUser = async (username: string, email: string, first_name:string, last_name: string, password:string, squad:number, is_admin:boolean) => {
+export const createUser = async (username: string, email: string, first_name:string, last_name: string, password:string, squad:string) => {
     try {
 
         if(!username){
@@ -62,16 +62,11 @@ export const createUser = async (username: string, email: string, first_name:str
             throw new Error('Tipos de dados inválidos no username, ele deve ser um string');
         }
 
-        if(!is_admin){
-            throw new Error('A informação sobre o cargo de administrados não pode ser vazia');
-        }
-
         if(squad){
-            if(typeof squad !== 'number'){
-                throw new Error('Tipo de dado inválido na squad, deve ser um número inteiro');
+            if(typeof squad !== 'string'){
+                throw new Error('Tipo de dado inválido na squad, ele deve ser um string');
             }
         }
-
 
         const existingUser = await userRepository.getUserByUsername(username);
         if (existingUser.length >0) {
@@ -89,7 +84,7 @@ export const createUser = async (username: string, email: string, first_name:str
             throw new Error("Erro ao gerar o hash da senha");
         }
        
-        const user = await userRepository.createUser(username, email, first_name, last_name, hashedPassword, squad, is_admin);
+        const user = await userRepository.createUser(username, email, first_name, last_name, hashedPassword, squad);
         return user;
     } catch (error: any) {
         throw error;

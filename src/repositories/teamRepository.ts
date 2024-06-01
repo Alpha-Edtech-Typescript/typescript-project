@@ -13,10 +13,24 @@ export const createTeam = async (team: ITeam): Promise<ITeam> => {
   }
 };
 
+export const getTeamByName = async (name: string): Promise<ITeam | null> => {
+  const query = "SELECT * FROM teams WHERE name = $1";
+  try {
+    const result = await pool.query(query, [name]);
+    if (result.rows.length === 0) {
+      return null;
+    }
+    return result.rows[0] as ITeam;
+  } catch (error) {
+    console.error("Erro ao buscar equipe pelo nome:", error);
+    throw new Error("Falha ao buscar equipe pelo nome");
+  }
+};
+
 export const getTeamByLeaderId = async (
-  leaderId: string,
+  leaderId: string
 ): Promise<ITeam | null> => {
-  const query = "SELECT * FROM teams WHERE leader_id = $1";
+  const query = "SELECT * FROM teams WHERE leader = $1";
   try {
     const result = await pool.query(query, [leaderId]);
     if (result.rows.length === 0) {

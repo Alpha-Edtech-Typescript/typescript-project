@@ -5,6 +5,6 @@ export interface IUser {
   firstName: string;
   lastName: string;
   password: string;
-  is_admin?: boolean;
+  isAdmin?: boolean;
   teamId?: string | null;
 }

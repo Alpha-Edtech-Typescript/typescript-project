@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as userServices from "../services/userServices";
+import * as userService from "../services/userServices";
 import { IAPIResponse } from "../interfaces/api";
 import { IUser } from "../interfaces/user";
 import { isAdmin } from "../utils/isAdmin";
@@ -12,17 +12,16 @@ export const createUser = async (req: Request, res: Response) => {
     message: null,
   };
   try {
-    const { username, email, first_name, last_name, password, is_admin, team } =
+    const { username, email, first_name, last_name, password, team } =
       req.body;
 
-    const user = await userServices.createUser(
+    const user = await userService.createUser(
       username,
       email,
       first_name,
       last_name,
       password,
-      is_admin,
-      team
+      team,
     );
     response.data = user;
     response.message = "Usuário cadastrado com sucesso!";
@@ -30,5 +29,6 @@ export const createUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     response.error = error.message;
     return res.status(400).json(response);
+    // res.status(500).json({ error: 'Falha ao criar usuário' });
   }
 };

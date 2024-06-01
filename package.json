@@ -1,5 +1,5 @@
 {
-  "name": "q04_aula6",
+  "name": "typescript-project",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -7,7 +7,9 @@
     "dev": "nodemon --watch 'src/**/.ts' --exec 'ts-node' src/app.ts",
     "prod": "npm run build && npm start",
     "start": "node ./dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/pg": "^8.11.6",
     "nodemon": "^3.1.1",
+    "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },

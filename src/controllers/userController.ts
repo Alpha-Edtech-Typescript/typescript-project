@@ -21,7 +21,7 @@ export const createUser = async (req: Request, res: Response) => {
       first_name,
       last_name,
       password,
-      squad
+      squad,
     );
     response.data = user;
     response.message = "Usuário cadastrado com sucesso!";

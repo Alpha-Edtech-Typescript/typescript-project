@@ -55,5 +55,3 @@ export const deleteTeam = async (teamId: number): Promise<ITeam> => {
 
   return await teamRepository.deleteTeam(teamId);
 };
-
-

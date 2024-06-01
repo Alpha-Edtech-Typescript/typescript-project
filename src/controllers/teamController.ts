@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as teamServices from "../services/teamServices";
-
 import { IAPIResponse } from "../interfaces/api";
 import { ITeam } from "../interfaces/team";
 import { isAdmin } from "../utils/isAdmin";

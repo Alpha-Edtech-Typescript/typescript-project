@@ -12,8 +12,7 @@ export const createUser = async (req: Request, res: Response) => {
     message: null,
   };
   try {
-    const { username, email, first_name, last_name, password, is_admin, team } =
-      req.body;
+    const { username, email, first_name, last_name, password, team } = req.body;
 
     const user = await userServices.createUser(
       username,
@@ -21,7 +20,6 @@ export const createUser = async (req: Request, res: Response) => {
       first_name,
       last_name,
       password,
-      is_admin,
       team
     );
     response.data = user;
@@ -30,5 +28,6 @@ export const createUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     response.error = error.message;
     return res.status(400).json(response);
+    // res.status(500).json({ error: 'Falha ao criar usuário' });
   }
 };

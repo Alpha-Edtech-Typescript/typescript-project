@@ -12,7 +12,7 @@ export const createUser = async (req: Request, res: Response) => {
     message: null,
   };
   try {
-    const { username, email, first_name, last_name, password, squad } =
+    const { username, email, first_name, last_name, password, team } =
       req.body;
 
     const user = await userService.createUser(
@@ -21,7 +21,7 @@ export const createUser = async (req: Request, res: Response) => {
       first_name,
       last_name,
       password,
-      squad,
+      team,
     );
     response.data = user;
     response.message = "Usuário cadastrado com sucesso!";

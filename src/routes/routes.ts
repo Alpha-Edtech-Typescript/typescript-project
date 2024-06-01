@@ -1,13 +1,13 @@
 import { Router } from "express";
 import userRouter from "../routes/userRoutes";
-// import squadRouter from "../routes/squadRoutes";
+// import teamRouter from "../routes/teamRoutes";
 import loginRouter from "../routes/loginRoutes";
 import logoutRouter from "../routes/logoutRoutes";
 
 const router = Router();
 
 router.use("/users", userRouter);
-// router.use("/squad", squadRouter);
+// router.use("/team", teamRouter);
 router.use("/login", loginRouter);
 router.use("/logout", logoutRouter);
 

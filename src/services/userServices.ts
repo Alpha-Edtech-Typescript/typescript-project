@@ -13,7 +13,7 @@ export const createUser = async (
   first_name: string,
   last_name: string,
   password: string,
-  squad: string
+  team: string
 ) => {
   try {
     if (!username) {
@@ -84,10 +84,10 @@ export const createUser = async (
       );
     }
 
-    if (squad) {
-      if (typeof squad !== "string") {
+    if (team) {
+      if (typeof team !== "string") {
         throw new Error(
-          "Tipo de dado inválido na squad, ele deve ser um string"
+          "Tipo de dado inválido no team, ele deve ser um string"
         );
       }
     }
@@ -114,7 +114,7 @@ export const createUser = async (
       first_name,
       last_name,
       hashedPassword,
-      squad
+      team
     );
     return user;
   } catch (error: any) {

@@ -7,10 +7,10 @@ export const createUser = async (
   first_name: string,
   last_name: string,
   password: string,
-  squad: string
+  team: string
 ) => {
   const query =
-    "INSERT INTO users (username, email, first_name, last_name, password, squad) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+    "INSERT INTO users (username, email, first_name, last_name, password, team) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
   try {
     const result = await pool.query(query, [
       username,
@@ -18,7 +18,7 @@ export const createUser = async (
       first_name,
       last_name,
       password,
-      squad,
+      team,
     ]);
     return result.rows[0];
   } catch (error) {

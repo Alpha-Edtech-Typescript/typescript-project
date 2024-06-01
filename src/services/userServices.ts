@@ -13,7 +13,8 @@ export const createUser = async (
   first_name: string,
   last_name: string,
   password: string,
-  team: string
+  team: string,
+  is_admin: boolean
 ) => {
   try {
     if (!username) {
@@ -114,7 +115,8 @@ export const createUser = async (
       first_name,
       last_name,
       hashedPassword,
-      team
+      team,
+      is_admin
     );
     return user;
   } catch (error: any) {

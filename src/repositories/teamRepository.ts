@@ -8,8 +8,8 @@ export const createTeam = async (team: ITeam): Promise<ITeam> => {
     const result = await pool.query(query, values);
     return result.rows[0] as ITeam;
   } catch (error: any) {
-    console.log("Falha ao criar uma nova equipe", error);
-    throw new Error("Falha ao criar uma nova equipe");
+    console.log("Failed to create a new team.", error);
+    throw new Error("Failed to create a new team.");
   }
 };
 
@@ -22,8 +22,8 @@ export const getTeamByName = async (name: string): Promise<ITeam | null> => {
     }
     return result.rows[0] as ITeam;
   } catch (error) {
-    console.error("Erro ao buscar equipe pelo nome:", error);
-    throw new Error("Falha ao buscar equipe pelo nome");
+    console.error("Error fetching team by name:", error);
+    throw new Error("Failed fetching team by name");
   }
 };
 
@@ -37,7 +37,7 @@ export const getAllTeams = async (): Promise<ITeam[]> => {
   }
 };
 
-export const getTeamById = async (teamId: number): Promise<ITeam> => {
+export const getTeamById = async (teamId: string): Promise<ITeam> => {
   try {
     const { rows } = await pool.query("SELECT * FROM teams WHERE id = $1", [
       teamId,
@@ -59,12 +59,12 @@ export const getTeamByLeaderId = async (
     }
     return result.rows[0] as ITeam;
   } catch (error) {
-    console.error("Erro ao buscar equipe pelo ID do líder:", error);
-    throw new Error("Falha ao buscar equipe pelo ID do líder");
+    console.error("Error fetching team by leader ID.:", error);
+    throw new Error("Failed fetching team by leader ID.");
   }
 };
 
-export const deleteTeam = async (teamId: number): Promise<ITeam> => {
+export const deleteTeam = async (teamId: string): Promise<ITeam> => {
   try {
     const { rows } = await pool.query(
       "DELETE FROM teams WHERE id = $1 RETURNING *",

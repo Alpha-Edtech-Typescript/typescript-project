@@ -54,7 +54,7 @@ export const getUserByUsername = async (username: string) => {
     return result.rows;
   } catch (error) {
     console.log(error);
-    throw new Error("Failure to locate the user by username.");
+    throw new Error("Failed to locate the user by username.");
   }
 };
 
@@ -65,7 +65,7 @@ export const getUserByEmail = async (email: string) => {
     return result.rows;
   } catch (error) {
     console.log(error);
-    throw new Error("Failure to locate the user by email.");
+    throw new Error("Failed to locate the user by email.");
   }
 };
 
@@ -88,6 +88,17 @@ export const getUserById = async (userId: string): Promise<IUser> => {
     return result.rows[0] as IUser;
   } catch (error) {
     console.error("Error while fetching user by ID:", error);
-    throw new Error("Failure to retrieve user by ID.");
+    throw new Error("Failed to retrieve user by ID.");
+  }
+};
+
+export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
+  const query = "SELECT * FROM users WHERE teamId = $1";
+  try {
+    const result = await pool.query(query, [teamId]);
+    return result.rows as IUser[];
+  } catch (error: any) {
+    console.error("Error fetching users by teamId:", error);
+    throw new Error("Failed to fetch users by teamId");
   }
 };

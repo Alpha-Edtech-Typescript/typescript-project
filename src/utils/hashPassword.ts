@@ -7,7 +7,7 @@ export async function hashPassword(password: string): Promise<string | null> {
     const hash: string = await bcrypt.hash(password, salt);
     return hash;
   } catch (error: any) {
-    console.error("Erro ao gerar o hash da senha:", error);
+    console.error("Error generating password hash:", error);
     return null;
   }
 }

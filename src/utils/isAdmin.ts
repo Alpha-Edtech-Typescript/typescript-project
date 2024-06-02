@@ -4,9 +4,9 @@ import * as userRepository from "../repositories/userRepository";
 export const isAdmin = async (userId: string): Promise<boolean> => {
   try {
     const user: IUser = await userRepository.getUserById(userId);
-    return user.is_admin === true;
+    return user.isAdmin === true;
   } catch (error) {
-    console.error("Erro ao verificar se o usuário é admin:", error);
-    throw new Error("Falha ao verificar permissão de administrador");
+    console.error("Error checking if the user is an admin:", error);
+    throw new Error("Failed checking if the user is an admin.");
   }
 };

@@ -8,7 +8,7 @@ export async function comparePassword(
     const match: boolean = await bcrypt.compare(password, hashedPassword);
     return match;
   } catch (error: any) {
-    console.error("Erro ao comparar as senhas:", error);
+    console.error("Error comparing passwords:", error);
     return false;
   }
 }

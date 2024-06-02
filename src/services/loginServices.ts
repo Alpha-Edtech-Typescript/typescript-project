@@ -26,9 +26,9 @@ export const authenticateUser = async (username: string, password: string) => {
         return { auth: true, token };
       }
     }
-    return { auth: false, error: "Usuário e/ou senha inválidos" };
+    return { auth: false, error: "Invalid username and/or password." };
   } catch (error) {
     console.log(error);
-    throw new Error("Falha na autenticação do usuário");
+    throw new Error("User authentication failed.");
   }
 };

@@ -4,6 +4,7 @@ import { IAPIResponse } from "../interfaces/api";
 import { ITeam } from "../interfaces/team";
 import { isAdmin } from "../utils/isAdmin";
 import { isLeader } from "../utils/isLeader";
+import { IUser } from "../interfaces/user";
 
 export const createTeam = async (req: Request, res: Response) => {
   const response: IAPIResponse<ITeam> = { success: false };
@@ -12,12 +13,12 @@ export const createTeam = async (req: Request, res: Response) => {
     const userId = req.user;
 
     if (!userId) {
-      throw new Error("Usuário não autenticado");
+      throw new Error("User not authenticated.");
     }
 
     const team = await teamServices.createTeam(userId, name, leaderId);
     response.data = team;
-    response.message = "Time criado com sucesso!";
+    response.message = "Team created successfully!";
     res.status(201).json(response);
   } catch (error: any) {
     response.error = error.message;
@@ -48,7 +49,7 @@ export const getTeamById = async (
   res: Response
 ): Promise<void> => {
   try {
-    const team = await teamServices.getTeamById(Number(req.params.id));
+    const team = await teamServices.getTeamById(req.params.teamId);
     res.json({ data: team, error: null });
   } catch (error: any) {
     console.error(error);
@@ -61,7 +62,7 @@ export const deleteTeam = async (
   res: Response
 ): Promise<void> => {
   try {
-    const deletedTeam = await teamServices.deleteTeam(Number(req.params.id));
+    const deletedTeam = await teamServices.deleteTeam(req.params.teamId);
     res.json({ data: deletedTeam, error: null });
   } catch (error: any) {
     console.error(error);

@@ -7,6 +7,15 @@ import {
 } from "../utils/validation";
 import { hashPassword } from "../utils/hashPassword";
 
+export const getAllUsers = async (): Promise<IUser[]> => {
+  try {
+		const users = await userRepository.getAllUsers();
+		return users;
+	} catch (error) {
+		throw error;
+	}
+};
+
 export const createUser = async (
   username: string,
   email: string,

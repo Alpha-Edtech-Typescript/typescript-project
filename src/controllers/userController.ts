@@ -5,6 +5,20 @@ import { IUser } from "../interfaces/user";
 import { isAdmin } from "../utils/isAdmin";
 import { isLeader } from "../utils/isLeader";
 
+export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+  const response: IAPIResponse<IUser[]> = { success: false };
+  try {
+    const users: IUser[] = await userServices.getAllUsers();
+    response.data = users;
+    response.success = true;
+    response.message = "Users retrieved successfully";
+    res.status(200).json(response);
+  } catch (error: any) {
+      console.error(error);
+      res.status(500).json({ data: null, error: "Internal server erro" });
+  }
+};
+
 export const createUser = async (req: Request, res: Response) => {
   const response: IAPIResponse<IUser> = { success: false };
   try {

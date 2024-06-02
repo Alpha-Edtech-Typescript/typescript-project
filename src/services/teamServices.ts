@@ -57,3 +57,8 @@ export const deleteTeam = async (teamId: string): Promise<ITeam> => {
 
   return await teamRepository.deleteTeam(teamId);
 };
+
+export const getUsersByTeamId = async (teamId: number): Promise<IUser[]> => {
+  const teamIdString = teamId.toString();
+  return await userRepository.getUsersByTeamId(teamIdString);
+};

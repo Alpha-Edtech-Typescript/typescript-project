@@ -10,7 +10,6 @@ export const getAllUsers = async (): Promise<IUser[]> => {
           email, 
           first_name AS "firstName", 
           last_name AS "lastName", 
-          password, 
           is_admin AS "isAdmin", 
           team AS "teamId"
         FROM users

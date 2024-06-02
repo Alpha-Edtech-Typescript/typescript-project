@@ -42,8 +42,8 @@ export const createUser = async (
     ]);
     return result.rows[0];
   } catch (error) {
-    console.error("Erro ao criar usuário:", error);
-    throw new Error("Falha ao criar usuário");
+    console.error("Error creating user:", error);
+    throw new Error("Failed to create user.");
   }
 };
 
@@ -54,7 +54,7 @@ export const getUserByUsername = async (username: string) => {
     return result.rows;
   } catch (error) {
     console.log(error);
-    throw new Error("Falha ao localizar o usuário pelo username");
+    throw new Error("Failure to locate the user by username.");
   }
 };
 
@@ -65,21 +65,29 @@ export const getUserByEmail = async (email: string) => {
     return result.rows;
   } catch (error) {
     console.log(error);
-    throw new Error("Falha ao localizar o usuário pelo email");
+    throw new Error("Failure to locate the user by email.");
   }
 };
 
 export const getUserById = async (userId: string): Promise<IUser> => {
-  const query =
-    "SELECT id, username, email, first_name, last_name, password, team, is_admin FROM users WHERE id = $1";
   try {
-    const result = await pool.query(query, [userId]);
+    const result = await pool.query(`
+      SELECT 
+        id, 
+        username, 
+        email, 
+        first_name AS "firstName", 
+        last_name AS "lastName", 
+        is_admin AS "isAdmin", 
+        team AS "teamId"
+      FROM users WHERE id = $1
+    `, [userId]);
     if (result.rows.length === 0) {
-      throw new Error(`Usuário com ID ${userId} não encontrado`);
+      throw new Error(`User with ID ${userId} not found.`);
     }
     return result.rows[0] as IUser;
   } catch (error) {
-    console.error("Erro ao buscar usuário pelo ID:", error);
-    throw new Error("Falha ao buscar usuário pelo ID");
+    console.error("Error while fetching user by ID:", error);
+    throw new Error("Failure to retrieve user by ID.");
   }
 };

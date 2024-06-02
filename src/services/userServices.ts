@@ -121,3 +121,12 @@ export const createUser = async (
     throw error;
   }
 };
+
+export const getUserById = async (id: string) => {
+	try {
+		const user = await userRepository.getUserById(id);
+		return user;
+	} catch (error) {
+		throw error;
+	}
+};

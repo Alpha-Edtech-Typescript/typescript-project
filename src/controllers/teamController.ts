@@ -6,11 +6,7 @@ import { isAdmin } from "../utils/isAdmin";
 import { isLeader } from "../utils/isLeader";
 
 export const createTeam = async (req: Request, res: Response) => {
-  const response: IAPIResponse<ITeam> = {
-    data: null,
-    error: null,
-    message: null,
-  };
+  const response: IAPIResponse<ITeam> = { success: false };
   try {
     const { name, leaderId } = req.body;
     const userId = req.user;
@@ -36,8 +32,8 @@ export const getAllTeams = async (
   try {
     const teams: ITeam[] = await teamServices.getAllTeams();
     const response: IAPIResponse<ITeam[]> = {
+      success: true,
       data: teams,
-      error: null,
       message: "Teams retrieved successfully",
     };
     res.json(response);

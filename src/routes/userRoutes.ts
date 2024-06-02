@@ -5,5 +5,6 @@ import * as auth from "../middlewares/auth";
 const router: Router = Router();
 
 router.post("/", userController.createUser);
+router.get("/me", auth.authenticateJWT, userController.getUserMe);
 
 export default router;

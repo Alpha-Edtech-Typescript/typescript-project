@@ -15,7 +15,7 @@ export const authenticateJWT = (
       return res.status(400).json({ message: "Invalid jwt Token" });
     }
 
-    req.user = decoded.id; // Aqui definimos a propriedade user
+    req.user = decoded.id;
     next();
   });
 };

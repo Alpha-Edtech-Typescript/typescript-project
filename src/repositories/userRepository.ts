@@ -1,6 +1,26 @@
 import { pool } from "../database/connection";
 import { IUser } from "../interfaces/user";
 
+export const getAllUsers = async (): Promise<IUser[]> => {
+  try {
+      const { rows } = await pool.query(`
+        SELECT 
+          id, 
+          username, 
+          email, 
+          first_name AS "firstName", 
+          last_name AS "lastName", 
+          is_admin AS "isAdmin", 
+          team AS "teamId"
+        FROM users
+      `);
+      return rows;
+  } catch (error: any) {
+      console.log(error)
+      throw new Error("Error updating users");
+  }
+};
+
 export const createUser = async (
   username: string,
   email: string,

@@ -26,55 +26,55 @@ export const createUser = async (
 ) => {
   try {
     if (!username) {
-      throw new Error("O username não pode ser vazio");
+      throw new Error("The username cannot be empty.");
     }
 
     if (typeof username !== "string") {
       throw new Error(
-        "Tipos de dados inválidos no username, ele deve ser um string"
+        "Invalid data types in the username, it must be a string."
       );
     }
 
     if (!validateName(username)) {
-      throw new Error("O username deve ter no mínimo 4 caracteres");
+      throw new Error("Username must have at least 4 characters.");
     }
 
     if (!email) {
-      throw new Error("O email não pode ser vazio");
+      throw new Error("Email cannot be empty.");
     }
 
     if (typeof email !== "string") {
       throw new Error(
-        "Tipos de dados inválidos no email, ele deve ser um string"
+        "Invalid data types in the email, it must be a string."
       );
     }
 
     if (!validateEmail(email)) {
-      throw new Error("Formato de email inválido. (example@example.com) ");
+      throw new Error("Invalid email format. (example@example.com) ");
     }
 
     if (!first_name) {
-      throw new Error("O nome não pode ser vazio");
+      throw new Error("Name cannot be empty.");
     }
 
     if (typeof first_name !== "string") {
       throw new Error(
-        "Tipos de dados inválidos no nome, ele deve ser um string"
+        "Invalid data types in the name, it must be a string."
       );
     }
 
     if (!last_name) {
-      throw new Error("O sobrenome não pode ser vazio");
+      throw new Error("Last name cannot be empty.");
     }
 
     if (typeof last_name !== "string") {
       throw new Error(
-        "Tipos de dados inválidos no sobrenome, ele deve ser um string"
+        "Invalid data types in the last name, it must be a string."
       );
     }
 
     if (!password) {
-      throw new Error("A senha não pode ser vazia");
+      throw new Error("Password cannot be empty.");
     }
 
     // if (typeof password !== 'string'){
@@ -83,38 +83,38 @@ export const createUser = async (
 
     if (!validatePassword(password)) {
       throw new Error(
-        "A senha deve ter no mínimo 8 caracteres sendo ao menos 1 maiúscula e 1 número"
+        "Password must have at least 8 characters with at least 1 uppercase letter and 1 number."
       );
     }
 
     if (typeof username !== "string") {
       throw new Error(
-        "Tipos de dados inválidos no username, ele deve ser um string"
+        "Invalid data types in the username, it must be a string."
       );
     }
 
     if (team) {
       if (typeof team !== "string") {
         throw new Error(
-          "Tipo de dado inválido no team, ele deve ser um string"
+          "Invalid data type in the team, it must be a string."
         );
       }
     }
 
     const existingUser = await userRepository.getUserByUsername(username);
     if (existingUser.length > 0) {
-      throw new Error("Nome de usuário já cadastrado!");
+      throw new Error("Username already registered!");
     }
 
     const existingEmail = await userRepository.getUserByEmail(email);
     if (existingEmail.length > 0) {
-      throw new Error("Email já cadastrado.");
+      throw new Error("Email already registered.");
     }
 
     const hashedPassword = await hashPassword(password);
 
     if (!hashedPassword) {
-      throw new Error("Erro ao gerar o hash da senha");
+      throw new Error("Error generating password hash.");
     }
 
     const user = await userRepository.createUser(

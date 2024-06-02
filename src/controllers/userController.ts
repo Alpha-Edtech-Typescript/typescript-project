@@ -19,6 +19,21 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+export const getUserById = async (req: Request, res: Response): Promise<void> => {
+  const response: IAPIResponse<IUser> = { success: false };
+  try {
+    const userId = req.params.userId;
+    const user: IUser = await userServices.getUserById(userId);
+    response.data = user;
+    response.success = true;
+    response.message = "User retrieved successfully";
+    res.status(200).json(response);
+  } catch (error: any) {
+      console.error(error);
+      res.status(500).json({ data: null, error: "Internal server erro" });
+  }
+};
+
 export const createUser = async (req: Request, res: Response) => {
   const response: IAPIResponse<IUser> = { success: false };
   try {
@@ -34,11 +49,11 @@ export const createUser = async (req: Request, res: Response) => {
     );
     response.data = user;
     response.success = true;
-    response.message = "Usuário cadastrado com sucesso!";
+    response.message = "User successfully registered!";
     res.status(201).json(response);
   } catch (error: any) {
     response.error = error.message;
-    response.message = "Não foi possível cadastrar o usuário!";
+    response.message = "Failed to register the user!";
     return res.status(400).json(response);
   }
 };
@@ -48,16 +63,16 @@ export const getUserMe = async (req: Request, res: Response) => {
 	try {
     const userId = req.user ?? '';
     if (!userId) {
-      throw new Error('ID do usuário não encontrado');
+      throw new Error('User ID not found.');
     }
 		const user = await userServices.getUserById(userId);
 		response.success = true;
 		response.data = user;
-    response.message = "Seu usuário foi encontrado com sucesso!"
+    response.message = "User found successfully!"
 		res.status(200).json(response);
 	} catch (error: any) {
     response.error = error.message;
-    response.message = "Não foi possível encontrar as suas informações!";
+    response.message = "Unable to find your information.!";
 		return res.status(500).json(response);
 	}
 };

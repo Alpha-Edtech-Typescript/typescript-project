@@ -102,3 +102,41 @@ export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
     throw new Error("Failed to fetch users by teamId");
   }
 };
+
+export const deleteUserById = async (userId: string): Promise<IUser> => {
+  try {
+    // Primeiro, obtenha os dados do usuário
+    const userResult = await pool.query(`
+      SELECT 
+        id, 
+        username, 
+        email, 
+        first_name AS "firstName", 
+        last_name AS "lastName", 
+        is_admin AS "isAdmin", 
+        team AS "teamId"
+      FROM users WHERE id = $1
+    `, [userId]);
+
+    if (userResult.rows.length === 0) {
+      throw new Error(`User with ID ${userId} not found.`);
+    }
+
+    const user = userResult.rows[0] as IUser;
+
+    // Em seguida, exclua o usuário
+    const deleteResult = await pool.query(`
+      DELETE FROM users WHERE id = $1
+    `, [userId]);
+
+    if (deleteResult.rowCount === 0) {
+      throw new Error(`Failed to delete user with ID ${userId}.`);
+    }
+
+    // Retorne os dados do usuário deletado
+    return user;
+  } catch (error) {
+    console.error("Error while deleting user by ID:", error);
+    throw new Error("Failed to delete user by ID.");
+  }
+};

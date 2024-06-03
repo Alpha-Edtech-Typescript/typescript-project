@@ -77,3 +77,18 @@ export const getUserMe = async (req: Request, res: Response) => {
 	}
 };
 
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  const response: IAPIResponse<IUser> = { success: false };
+  try {
+    const userId = req.params.userId;
+    const user: IUser = await userServices.deleteUser(userId);
+    response.data = user;
+    response.success = true;
+    response.message = "User deleted successfully!";
+    res.status(200).json(response);
+  } catch (error: any) {
+    console.error(error);
+    response.message = "Unable to delete user!";
+      res.status(500).json({ data: null, error: "Internal server erro" });
+  }
+};

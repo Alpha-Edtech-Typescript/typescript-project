@@ -139,3 +139,12 @@ export const getUserById = async (id: string) => {
 		throw error;
 	}
 };
+
+export const deleteUser = async (id: string): Promise<IUser> => {
+	try {
+		const user = await userRepository.deleteUserById(id);
+		return user;
+	} catch (error) {
+		throw error;
+	}
+};

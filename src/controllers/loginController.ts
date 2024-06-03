@@ -7,7 +7,7 @@ export const authenticate = async (req: Request, res: Response) => {
     const user = await loginServices.getUser(username);
 
     if (!user) {
-      return res.status(400).json({ error: "Usuário não encontrado" });
+      return res.status(400).json({ error: "User not found." });
     }
 
     const { auth, token } = await loginServices.authenticateUser(
@@ -20,15 +20,15 @@ export const authenticate = async (req: Request, res: Response) => {
       res.cookie("session_id", token, { maxAge, httpOnly: true });
       return res
         .status(200)
-        .json({ auth, message: "Usuário autenticado com sucesso!" });
+        .json({ auth, message: "User successfully authenticated!" });
     }
 
-    return res.status(400).json({ error: "Usuário e/ou senha inválidos" });
+    return res.status(400).json({ error: "Invalid username and/or password." });
   } catch (error) {
     console.log(error);
     return res
       .status(500)
-      .json({ error: "Falha ao autenticar usuário, erro no servidor" });
+      .json({ error: "Failed to authenticate user, server error." });
   }
 };
 
@@ -38,11 +38,11 @@ export const logout = (req: Request, res: Response) => {
     res.clearCookie("session_id", { path: "/" });
     return res
       .status(200)
-      .json({ success: true, message: "Logout realizado com sucesso" });
+      .json({ success: true, message: "Logout successful." });
   } catch (error) {
     console.log(error);
     return res
       .status(500)
-      .json({ error: "Falha ao realizar logout, erro no servidor" });
+      .json({ error: "Failed to logout, server error." });
   }
 };

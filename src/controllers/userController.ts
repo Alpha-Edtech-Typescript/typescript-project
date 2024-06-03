@@ -72,7 +72,7 @@ export const getUserMe = async (req: Request, res: Response) => {
 		res.status(200).json(response);
 	} catch (error: any) {
     response.error = error.message;
-    response.message = "Unable to find your information.!";
+    response.message = "Unable to find information!";
 		return res.status(500).json(response);
 	}
 };

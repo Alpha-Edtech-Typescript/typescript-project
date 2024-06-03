@@ -6,7 +6,7 @@ export const isLeader = async (userId: string): Promise<boolean> => {
     const team: ITeam | null = await teamRepository.getTeamByLeaderId(userId);
     return team !== null;
   } catch (error) {
-    console.error("Erro ao verificar se o usuário é líder:", error);
-    throw new Error("Falha ao verificar se o usuário é líder");
+    console.error("Error checking if the user is a leader:", error);
+    throw new Error("Failed checking if the user is a leader.");
   }
 };

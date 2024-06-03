@@ -87,3 +87,17 @@ export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
     throw new Error("Failed to fetch users by teamId");
   }
 };
+
+export const updateTeam = async (teamId: string, newTeam: Partial<ITeam>): Promise<ITeam> => {
+  try {
+    const { name, leaderId } = newTeam;
+    const result = await pool.query(
+      `UPDATE teams SET name = $1, leader = $2 WHERE id = $3 RETURNING *;`,
+      [name, leaderId, teamId]
+    );
+    return result.rows[0] as ITeam;
+  } catch (error: any) {
+    console.error("Error updating team:", error);
+    throw new Error("Failed to update team.");
+  }
+};

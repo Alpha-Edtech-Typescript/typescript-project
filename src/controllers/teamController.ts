@@ -98,6 +98,13 @@ export const updateTeam = async (req: Request, res: Response): Promise<void> => 
       throw new Error("User not authenticated.");
     }
 
+    const isAdminUser = await isAdmin(userId);
+    const isLeaderUser = await isLeader(userId, teamId);
+
+    if (!isAdminUser && !isLeaderUser) {
+      throw new Error("You do not have permission to update this team.");
+    }
+    
     const updatedTeam = await teamServices.updateTeam(teamId, updates);
     response.data = updatedTeam;
     response.success = true;

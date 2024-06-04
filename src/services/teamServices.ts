@@ -33,13 +33,7 @@ export const createTeam = async (
     throw new Error("Team name already in use.");
   }
 
-  // Cria uma nova equipe, não mandei o id por que ele vai ser gerado pelo banco
-  const newTeam: ITeam = {
-    name: teamName,
-    leaderId: leaderId,
-  };
-
-  return await teamRepository.createTeam(newTeam);
+  return await teamRepository.createTeam(teamName, leaderId);
 };
 
 export const getAllTeams = async (): Promise<ITeam[]> => {

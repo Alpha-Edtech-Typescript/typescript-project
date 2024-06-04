@@ -86,3 +86,25 @@ export const getUsersByTeamId = async (req: Request, res: Response): Promise<voi
       res.status(500).json(response);
   }
 };
+
+export const updateTeam = async (req: Request, res: Response): Promise<void> => {
+  const response: IAPIResponse<ITeam> = { success: false };
+  try {
+    const teamId = req.params.teamId;
+    const updates = req.body;
+    const userId = req.user;
+
+    if (!userId) {
+      throw new Error("User not authenticated.");
+    }
+
+    const updatedTeam = await teamServices.updateTeam(teamId, updates);
+    response.data = updatedTeam;
+    response.success = true;
+    response.message = "Team updated successfully!";
+    res.status(200).json(response);
+  } catch (error: any) {
+    response.error = error.message;
+    res.status(400).json(response);
+  }
+};

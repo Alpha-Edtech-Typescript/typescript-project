@@ -62,3 +62,20 @@ export const getUsersByTeamId = async (teamId: number): Promise<IUser[]> => {
   const teamIdString = teamId.toString();
   return await userRepository.getUsersByTeamId(teamIdString);
 };
+
+export const updateTeam = async (teamId: string, updates: Partial<ITeam>): Promise<ITeam> => {
+  try{
+    const existingTeam = await teamRepository.getTeamById(teamId);
+    if (!existingTeam) {
+      throw new Error("Team not found.");
+    }
+  
+    return await teamRepository.updateTeam(teamId, updates);
+  } catch (error: any) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to update team: ${error.message}`);
+    }
+
+    throw new Error(`Error updating team: ${error}`);
+  }
+};

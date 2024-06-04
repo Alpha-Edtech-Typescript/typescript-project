@@ -9,5 +9,6 @@ router.get("/", teamController.getAllTeams);
 router.get("/:teamId", teamController.getTeamById);
 router.delete("/:teamId", teamController.deleteTeam);
 router.get("/:teamId/members", teamController.getUsersByTeamId);
+router.patch("/:teamId", authenticateJWT, teamController.updateTeam);
 
 export default router;

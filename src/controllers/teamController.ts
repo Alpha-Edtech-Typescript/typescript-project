@@ -6,6 +6,7 @@ import { isAdmin } from "../utils/isAdmin";
 import { isLeader } from "../utils/isLeader";
 import { IUser } from "../interfaces/user";
 
+
 export const createTeam = async (req: Request, res: Response) => {
   const response: IAPIResponse<ITeam> = { success: false };
   try {
@@ -84,5 +85,25 @@ export const getUsersByTeamId = async (req: Request, res: Response): Promise<voi
       response.error = "Internal server error";
       response.message = "Failed to fetch users by teamId";
       res.status(500).json(response);
+  }
+};
+
+export const addMember = async (req: Request, res: Response) => {
+  try {
+    const { team_id, user_id } = req.params;
+    await teamServices.addMember(team_id, user_id);
+    res.status(200).json({ message: "Membro adicionado com sucesso!" });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const removeMember = async (req: Request, res: Response) => {
+  try {
+    const { team_id, user_id } = req.params;
+    await teamServices.removeMember(team_id, user_id);
+    res.status(200).json({ message: "Membro removido com sucesso!" });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
   }
 };

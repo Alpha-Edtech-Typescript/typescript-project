@@ -140,3 +140,15 @@ export const deleteUserById = async (userId: string): Promise<IUser> => {
     throw new Error("Failed to delete user by ID.");
   }
 };
+
+export const updateUser = async (user: IUser): Promise<IUser> => {
+  const query = `
+    UPDATE users
+    SET username = $1, email = $2, first_name = $3, last_name = $4, password = $5, teamId = $6, is_admin = $7
+    WHERE id = $8
+    RETURNING *;
+  `;
+  const values = [user.username, user.email, user.firstName, user.lastName, user.password, user.teamId, user.isAdmin, user.id];
+  const result = await pool.query(query, values);
+  return result.rows[0];
+};

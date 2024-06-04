@@ -31,6 +31,16 @@ export const getAllTeams = async (
   res: Response
 ): Promise<void> => {
   try {
+    const teamId = req.params.teamId;
+    const userId = req.user as string;
+
+    const isAdminUser = await isAdmin(userId);
+    const isLeaderUser = await isLeader(userId, teamId);
+
+    if (!isAdminUser && !isLeaderUser) {
+      throw new Error("You do not have permission to update this team.");
+    }
+
     const teams: ITeam[] = await teamServices.getAllTeams();
     const response: IAPIResponse<ITeam[]> = {
       success: true,
@@ -104,7 +114,7 @@ export const updateTeam = async (req: Request, res: Response): Promise<void> => 
     if (!isAdminUser && !isLeaderUser) {
       throw new Error("You do not have permission to update this team.");
     }
-    
+
     const updatedTeam = await teamServices.updateTeam(teamId, updates);
     response.data = updatedTeam;
     response.success = true;

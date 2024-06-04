@@ -6,7 +6,7 @@ export const isLeader = async (userId: string, teamId: string): Promise<boolean>
     const team: ITeam | null = await teamRepository.getTeamByLeaderId(userId);
 
     if (team?.id === teamId) {
-      if (userId !== team.leaderId)
+      if (userId !== team?.leaderId)
         return false;
     }
 

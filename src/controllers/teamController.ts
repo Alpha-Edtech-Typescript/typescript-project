@@ -108,12 +108,12 @@ export const getUsersByTeamId = async (
 ): Promise<void> => {
   const response: IAPIResponse<IUser[]> = { success: false };
   try {
-    const teamId = req.params.teamId;
-    const users: IUser[] = await teamServices.getUsersByTeamId(Number(teamId));
-    response.data = users;
-    response.success = true;
-    response.message = "Users retrieved successfully";
-    res.status(200).json(response);
+      const teamId = req.params.teamId;
+      const users: IUser[] = await teamServices.getUsersByTeamId(teamId);
+      response.data = users;
+      response.success = true;
+      response.message = "Users retrieved successfully";
+      res.status(200).json(response);
   } catch (error: any) {
     console.error(error);
     response.error = "Internal server error";

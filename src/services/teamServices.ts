@@ -52,9 +52,8 @@ export const deleteTeam = async (teamId: string): Promise<ITeam> => {
   return await teamRepository.deleteTeam(teamId);
 };
 
-export const getUsersByTeamId = async (teamId: number): Promise<IUser[]> => {
-  const teamIdString = teamId.toString();
-  return await userRepository.getUsersByTeamId(teamIdString);
+export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
+  return await userRepository.getUsersByTeamId(teamId);
 };
 
 export const updateTeam = async (teamId: string, updates: Partial<ITeam>): Promise<ITeam> => {

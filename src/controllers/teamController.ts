@@ -84,7 +84,7 @@ export const getUsersByTeamId = async (req: Request, res: Response): Promise<voi
   const response: IAPIResponse<IUser[]> = { success: false };
   try {
       const teamId = req.params.teamId;
-      const users: IUser[] = await teamServices.getUsersByTeamId(Number(teamId));
+      const users: IUser[] = await teamServices.getUsersByTeamId(teamId);
       response.data = users;
       response.success = true;
       response.message = "Users retrieved successfully";

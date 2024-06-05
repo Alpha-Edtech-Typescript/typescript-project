@@ -182,7 +182,11 @@ export const addMember = async (req: Request, res: Response) => {
 export const removeMember = async (req: Request, res: Response) => {
   try {
     const { team_id, user_id } = req.params;
-    await teamServices.removeMember(team_id, user_id);
+  
+    const isLeaderUser = await isAnyLeader(user_id);
+    if (isLeaderUser) throw new Error("The team leader cannot be removed");
+
+    await teamServices.removeMember(user_id, team_id);
     res.status(200).json({ message: "Membro removido com sucesso!" });
   } catch (error: any) {
     res.status(400).json({ error: error.message });

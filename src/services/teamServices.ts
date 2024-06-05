@@ -94,6 +94,9 @@ export const removeMember = async (user_id: string, team_id: string) => {
     throw new Error("Usuário não encontrado na equipe.");
   }
 
+  // Atribuir null ao teamId do usuário
   user.teamId = null;
-  await teamRepository.updateUserTeam(user_id, '');
+  
+  // Atualizar o usuário no banco de dados
+  await teamRepository.updateUserTeam(user_id, null);
 };

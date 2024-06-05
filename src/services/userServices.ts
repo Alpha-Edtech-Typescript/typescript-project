@@ -148,3 +148,37 @@ export const deleteUser = async (id: string): Promise<IUser> => {
 		throw error;
 	}
 };
+
+export const updateUser = async (id: string, fields: Partial<IUser>): Promise<IUser> => {
+  try {
+    const oldUser: IUser | null = await userRepository.getUserById(id);
+
+    if (!oldUser) {
+      throw new Error("Usuário não existente");
+    }
+
+    const newUser: IUser = {
+      username: fields.username || oldUser.username,
+      email: fields.email || oldUser.email,
+      password: fields.password || oldUser.password,
+      id: fields.id || oldUser.id,
+      lastName: fields.lastName || oldUser.lastName,
+      firstName: fields.firstName || oldUser.firstName,
+    };
+
+    const updatedUser = await userRepository.updateUser(id, newUser);
+    return updatedUser;
+  } catch (error: any) {
+    throw new Error(`Falha ao atualizar usuário: ${error.message}`);
+  }
+};
+
+export const makeUserAdmin = async (id: string): Promise<IUser> => {
+	try {
+		const user = await userRepository.makeUserAdmin(id);
+		return user;
+	} catch (error) {
+		throw error;
+	}
+};
+

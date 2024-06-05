@@ -7,6 +7,7 @@ import { isAdmin } from "../utils/isAdmin";
 import { isLeader } from "../utils/isLeader";
 import { IUser } from "../interfaces/user";
 import { isAnyLeader } from "../utils/isAnyLeader";
+import { isMember } from "../utils/isMember"
 
 export const createTeam = async (req: Request, res: Response) => {
   const response: IAPIResponse<ITeam> = { success: false };
@@ -66,11 +67,9 @@ export const getTeamById = async (
     const loggedUser = String(req.user);
     const adminLogged = await isAdmin(loggedUser);
     const leaderLogged = await isAnyLeader(loggedUser);
-    const isMember = await userRepository.getUsersByTeamId(teamId);
+    const memberLogged = await isMember(loggedUser, teamId)
 
-    console.log("O usuário é um membro dessa equipe:", isMember);
-
-    if (!adminLogged && !leaderLogged && !isMember) {
+    if (!adminLogged && !leaderLogged && !memberLogged) {
       throw new Error(
         "Permission denied, you need to be an admin, a leader or a member to see the teams."
       );
@@ -108,16 +107,28 @@ export const getUsersByTeamId = async (
 ): Promise<void> => {
   const response: IAPIResponse<IUser[]> = { success: false };
   try {
-      const teamId = req.params.teamId;
-      const users: IUser[] = await teamServices.getUsersByTeamId(teamId);
-      response.data = users;
-      response.success = true;
-      response.message = "Users retrieved successfully";
-      res.status(200).json(response);
+    const teamId = req.params.teamId;
+
+    const loggedUser = String(req.user);
+    const adminLogged = await isAdmin(loggedUser);
+    const leaderLogged = await isLeader(loggedUser, teamId);
+    const memberLogged = await isMember(loggedUser, teamId)
+
+    if (!adminLogged && !leaderLogged && !memberLogged) {
+      throw new Error(
+        "Permission denied, you need to be an admin, a leader or a member to see the teams."
+      );
+    }
+
+    const users: IUser[] = await teamServices.getUsersByTeamId(teamId);
+    response.data = users;
+    response.success = true;
+    response.message = "Users retrieved successfully";
+    res.status(200).json(response);
   } catch (error: any) {
     console.error(error);
-    response.error = "Internal server error";
-    response.message = "Failed to fetch users by teamId";
+    response.error = error;
+    response.message = error.message;
     res.status(500).json(response);
   }
 };

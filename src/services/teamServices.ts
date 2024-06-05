@@ -15,10 +15,14 @@ export const createTeam = async (
     throw new Error("Only admin can create teams.");
   }
 
+  if(leaderId === userId){
+    throw new Error("Admin can not be set as leaders.");
+  }
+  
   // Verifica se o líder existe
   const leader = await userRepository.getUserById(leaderId);
   if (!leader) {
-    throw new Error("Leader not found.");
+    throw new Error("User not found to be leader.");
   }
 
   // Verifica se o líder já é líder de outra equipe

@@ -7,19 +7,27 @@ import { isAdmin } from "../utils/isAdmin";
 import { isLeader } from "../utils/isLeader";
 import { IUser } from "../interfaces/user";
 import { isAnyLeader } from "../utils/isAnyLeader";
-import { isMember } from "../utils/isMember"
+import { isMember } from "../utils/isMember";
 
 export const createTeam = async (req: Request, res: Response) => {
   const response: IAPIResponse<ITeam> = { success: false };
   try {
     const { name, leaderId } = req.body;
-    const userId = req.user;
 
-    if (!userId) {
+    const loggedUser = String(req.user);
+    const adminLogged = await isAdmin(loggedUser);
+
+    if (!loggedUser) {
       throw new Error("User not authenticated.");
     }
 
-    const team = await teamServices.createTeam(userId, name, leaderId);
+    if (!adminLogged) {
+      throw new Error(
+        "Permission denied, you need to be an admin to create a new team."
+      );
+    }
+
+    const team = await teamServices.createTeam(loggedUser, name, leaderId);
     response.data = team;
     response.message = "Team created successfully!";
     res.status(201).json(response);
@@ -67,7 +75,7 @@ export const getTeamById = async (
     const loggedUser = String(req.user);
     const adminLogged = await isAdmin(loggedUser);
     const leaderLogged = await isAnyLeader(loggedUser);
-    const memberLogged = await isMember(loggedUser, teamId)
+    const memberLogged = await isMember(loggedUser, teamId);
 
     if (!adminLogged && !leaderLogged && !memberLogged) {
       throw new Error(
@@ -112,7 +120,7 @@ export const getUsersByTeamId = async (
     const loggedUser = String(req.user);
     const adminLogged = await isAdmin(loggedUser);
     const leaderLogged = await isLeader(loggedUser, teamId);
-    const memberLogged = await isMember(loggedUser, teamId)
+    const memberLogged = await isMember(loggedUser, teamId);
 
     if (!adminLogged && !leaderLogged && !memberLogged) {
       throw new Error(

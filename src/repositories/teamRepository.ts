@@ -120,7 +120,7 @@ export const updateTeam = async (teamId: string, newTeam: Partial<ITeam>): Promi
   }
 };
 
-export const updateUserTeam = async (user_id: string, team_id: string): Promise<IUser> => {
+export const updateUserTeam = async (user_id: string, team_id: string | null): Promise<IUser> => {
   const updateUserTeamQuery = "UPDATE users SET team = $1 WHERE id = $2 RETURNING *";
   
   try {

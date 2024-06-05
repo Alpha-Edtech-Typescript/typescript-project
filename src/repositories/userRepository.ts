@@ -93,7 +93,7 @@ export const getUserById = async (userId: string): Promise<IUser> => {
 };
 
 export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
-  const query = "SELECT * FROM users WHERE teamId = $1";
+  const query = "SELECT * FROM users WHERE team = $1";
   try {
     const result = await pool.query(query, [teamId]);
     return result.rows as IUser[];

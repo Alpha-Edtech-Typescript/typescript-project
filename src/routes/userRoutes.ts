@@ -11,7 +11,6 @@ router.get("/", auth.authenticateJWT, adminOnly, userController.getAllUsers);
 router.get(
   "/:userId",
   auth.authenticateJWT,
-  adminOnly,
   userController.getUserById,
 );
 router.delete(

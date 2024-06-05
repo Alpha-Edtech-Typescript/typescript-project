@@ -9,11 +9,11 @@ import { hashPassword } from "../utils/hashPassword";
 
 export const getAllUsers = async (): Promise<IUser[]> => {
   try {
-		const users = await userRepository.getAllUsers();
-		return users;
-	} catch (error) {
-		throw error;
-	}
+    const users = await userRepository.getAllUsers();
+    return users;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const createUser = async (
@@ -35,18 +35,16 @@ export const createUser = async (
       );
     }
 
-    if (!validateName(username)) {
-      throw new Error("Username must have at least 4 characters.");
-    }
+    // if (!validateName(username)) {
+    //   throw new Error("Username must have at least 4 characters.");
+    // }
 
     if (!email) {
       throw new Error("Email cannot be empty.");
     }
 
     if (typeof email !== "string") {
-      throw new Error(
-        "Invalid data types in the email, it must be a string."
-      );
+      throw new Error("Invalid data types in the email, it must be a string.");
     }
 
     if (!validateEmail(email)) {
@@ -58,9 +56,7 @@ export const createUser = async (
     }
 
     if (typeof first_name !== "string") {
-      throw new Error(
-        "Invalid data types in the name, it must be a string."
-      );
+      throw new Error("Invalid data types in the name, it must be a string.");
     }
 
     if (!last_name) {
@@ -95,9 +91,7 @@ export const createUser = async (
 
     if (team) {
       if (typeof team !== "string") {
-        throw new Error(
-          "Invalid data type in the team, it must be a string."
-        );
+        throw new Error("Invalid data type in the team, it must be a string.");
       }
     }
 
@@ -132,21 +126,21 @@ export const createUser = async (
 };
 
 export const getUserById = async (id: string) => {
-	try {
-		const user = await userRepository.getUserById(id);
-		return user;
-	} catch (error) {
-		throw error;
-	}
+  try {
+    const user = await userRepository.getUserById(id);
+    return user;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteUser = async (id: string): Promise<IUser> => {
-	try {
-		const user = await userRepository.deleteUserById(id);
-		return user;
-	} catch (error) {
-		throw error;
-	}
+  try {
+    const user = await userRepository.deleteUserById(id);
+    return user;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateUser = async (id: string, fields: Partial<IUser>): Promise<IUser> => {

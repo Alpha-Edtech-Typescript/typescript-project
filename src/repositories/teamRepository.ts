@@ -2,15 +2,33 @@ import { pool } from "../database/connection";
 import { ITeam } from "../interfaces/team";
 import { IUser } from "../interfaces/user";
 
-export const createTeam = async (team: ITeam): Promise<ITeam> => {
-  const query = "INSERT INTO teams (name, leader) VALUES ($1, $2) RETURNING *";
-  const values = [team.name, team.leaderId];
+export const createTeam = async (teamName: string, leaderId: string): Promise<ITeam> => {
+  const createTeamQuery = "INSERT INTO teams (name, leader) VALUES ($1, $2) RETURNING *";
+  const updateUserQuery = "UPDATE users SET team = $1 WHERE id = $2 RETURNING *";
+
+  let client;
   try {
-    const result = await pool.query(query, values);
-    return result.rows[0] as ITeam;
+    client = await pool.connect();
+    await client.query("BEGIN");
+
+    const { rows } = await client.query(createTeamQuery, [teamName, leaderId]);
+    const newTeam = rows[0];
+    console.log(newTeam);
+
+    await client.query(updateUserQuery, [newTeam.id, leaderId]);
+
+    await client.query("COMMIT");
+    
+    return newTeam;
   } catch (error: any) {
-    console.log("Failed to create a new team.", error);
+    if (client) {
+      await client.query("ROLLBACK");
+    }
     throw new Error("Failed to create a new team.");
+  } finally {
+    if (client) {
+      client.release();
+    }
   }
 };
 
@@ -99,5 +117,19 @@ export const updateTeam = async (teamId: string, newTeam: Partial<ITeam>): Promi
   } catch (error: any) {
     console.error("Error updating team:", error);
     throw new Error("Failed to update team.");
+  }
+};
+
+export const updateUserTeam = async (user_id: string, team_id: string): Promise<IUser> => {
+  const updateUserTeamQuery = "UPDATE users SET team = $1 WHERE id = $2 RETURNING *";
+  
+  try {
+    const { rows } = await pool.query(updateUserTeamQuery, [team_id, user_id]);
+    const updatedUser = rows[0];
+    
+    return updatedUser;
+  } catch (error: any) {
+    console.error("Error updating user's team:", error);
+    throw new Error("Failed to update user's team.");
   }
 };

@@ -3,7 +3,7 @@ import { IUser } from "../interfaces/user";
 
 export const getAllUsers = async (): Promise<IUser[]> => {
   try {
-      const { rows } = await pool.query(`
+    const { rows } = await pool.query(`
         SELECT 
           id, 
           username, 
@@ -14,10 +14,10 @@ export const getAllUsers = async (): Promise<IUser[]> => {
           team AS "teamId"
         FROM users
       `);
-      return rows;
+    return rows;
   } catch (error: any) {
-      console.log(error)
-      throw new Error("Error updating users");
+    console.log(error);
+    throw new Error("Error updating users");
   }
 };
 
@@ -71,7 +71,8 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUserById = async (userId: string): Promise<IUser> => {
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT 
         id, 
         username, 
@@ -81,7 +82,9 @@ export const getUserById = async (userId: string): Promise<IUser> => {
         is_admin AS "isAdmin", 
         team AS "teamId"
       FROM users WHERE id = $1
-    `, [userId]);
+    `,
+      [userId]
+    );
     if (result.rows.length === 0) {
       throw new Error(`User with ID ${userId} not found.`);
     }
@@ -93,7 +96,7 @@ export const getUserById = async (userId: string): Promise<IUser> => {
 };
 
 export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
-  const query = "SELECT * FROM users WHERE teamId = $1";
+  const query = "SELECT * FROM users WHERE team = $1";
   try {
     const result = await pool.query(query, [teamId]);
     return result.rows as IUser[];
@@ -106,7 +109,8 @@ export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
 export const deleteUserById = async (userId: string): Promise<IUser> => {
   try {
     // Primeiro, obtenha os dados do usuário
-    const userResult = await pool.query(`
+    const userResult = await pool.query(
+      `
       SELECT 
         id, 
         username, 
@@ -116,7 +120,9 @@ export const deleteUserById = async (userId: string): Promise<IUser> => {
         is_admin AS "isAdmin", 
         team AS "teamId"
       FROM users WHERE id = $1
-    `, [userId]);
+    `,
+      [userId]
+    );
 
     if (userResult.rows.length === 0) {
       throw new Error(`User with ID ${userId} not found.`);
@@ -125,9 +131,12 @@ export const deleteUserById = async (userId: string): Promise<IUser> => {
     const user = userResult.rows[0] as IUser;
 
     // Em seguida, exclua o usuário
-    const deleteResult = await pool.query(`
+    const deleteResult = await pool.query(
+      `
       DELETE FROM users WHERE id = $1
-    `, [userId]);
+    `,
+      [userId]
+    );
 
     if (deleteResult.rowCount === 0) {
       throw new Error(`Failed to delete user with ID ${userId}.`);

@@ -9,7 +9,12 @@ export function validatePassword(password: string): boolean {
   return re.test(password);
 }
 
+// export function validateName(name: string): boolean {
+//   const cleanedName = name.replace(/\s+/g, "");
+//   return /^[A-Za-z\s]+$/.test(name) && cleanedName.length >= 4;
+// }
+
 export function validateName(name: string): boolean {
-  const cleanedName = name.replace(/\s+/g, "");
+  const cleanedName = name.trim(); // Remover espaços em branco no início e no final
   return /^[A-Za-z\s]+$/.test(name) && cleanedName.length >= 4;
 }

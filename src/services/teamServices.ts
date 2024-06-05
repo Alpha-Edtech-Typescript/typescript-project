@@ -33,13 +33,7 @@ export const createTeam = async (
     throw new Error("Team name already in use.");
   }
 
-  // Cria uma nova equipe, não mandei o id por que ele vai ser gerado pelo banco
-  const newTeam: ITeam = {
-    name: teamName,
-    leaderId: leaderId,
-  };
-
-  return await teamRepository.createTeam(newTeam);
+  return await teamRepository.createTeam(teamName, leaderId);
 };
 
 export const getAllTeams = async (): Promise<ITeam[]> => {
@@ -58,9 +52,8 @@ export const deleteTeam = async (teamId: string): Promise<ITeam> => {
   return await teamRepository.deleteTeam(teamId);
 };
 
-export const getUsersByTeamId = async (teamId: number): Promise<IUser[]> => {
-  const teamIdString = teamId.toString();
-  return await userRepository.getUsersByTeamId(teamIdString);
+export const getUsersByTeamId = async (teamId: string): Promise<IUser[]> => {
+  return await userRepository.getUsersByTeamId(teamId);
 };
 
 export const updateTeam = async (teamId: string, updates: Partial<ITeam>): Promise<ITeam> => {
@@ -78,4 +71,29 @@ export const updateTeam = async (teamId: string, updates: Partial<ITeam>): Promi
 
     throw new Error(`Error updating team: ${error}`);
   }
+};
+
+export const addMember = async (user_id: string, team_id: string) => {
+  const user = await userRepository.getUserById(user_id);
+  if (!user) {
+    throw new Error("Usuário não encontrado.");
+  }
+
+  const team = await teamRepository.getTeamById(team_id);
+  if (!team) {
+    throw new Error("Equipe não encontrada.");
+  }
+
+  user.teamId = team.id;
+  await teamRepository.updateUserTeam(user_id, team_id);
+};
+
+export const removeMember = async (user_id: string, team_id: string) => {
+  const user = await userRepository.getUserById(user_id);
+  if (!user || user.teamId !== team_id) {
+    throw new Error("Usuário não encontrado na equipe.");
+  }
+
+  user.teamId = null;
+  await teamRepository.updateUserTeam(user_id, '');
 };

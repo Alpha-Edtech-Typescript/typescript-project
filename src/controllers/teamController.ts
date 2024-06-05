@@ -173,11 +173,14 @@ export const updateTeam = async (
   }
 };
 
-//Parte nova do Murilo para testar
 export const addMember = async (req: Request, res: Response) => {
   try {
-    const { team_id, user_id } = req.params;
-    await teamServices.addMember(team_id, user_id);
+    const { user_id, team_id } = req.params;
+    const isLeaderAdmin = await isAnyLeader(user_id);
+
+    if (isLeaderAdmin) throw new Error("This user is already a team leader");
+
+    await teamServices.addMember(user_id, team_id);
     res.status(200).json({ message: "Membro adicionado com sucesso!" });
   } catch (error: any) {
     res.status(400).json({ error: error.message });

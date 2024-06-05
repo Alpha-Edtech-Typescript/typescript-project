@@ -114,4 +114,43 @@ export const deleteUser = async (
     response.message = "Unable to delete user!";
     res.status(500).json({ data: null, error: "Internal server erro" });
   }
+};  
+
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+  const response: IAPIResponse<IUser> = { success: false };
+  try {
+    const userId = req.params.userId;
+    const fields: Partial<IUser> = req.body;
+
+    const userLoggedId = req.user;
+
+    if (!userLoggedId) throw new Error("You are not logged in");
+    
+    const isAdminUser = await isAdmin(userLoggedId);
+
+    const isLeaderUser = await isAnyLeader(userId);
+
+    const isUpdatingSelf  = (userLoggedId === userId);
+
+    if (isUpdatingSelf) {
+      const updatedUser: IUser = await userServices.updateUser(userId, fields);
+      response.data = updatedUser;
+      response.success = true;
+      response.message = "User updated successfully!";
+      res.json(response);
+    } else if (!isUpdatingSelf && !isLeaderUser && isAdminUser) {
+      const promotedUser: IUser = await userServices.makeUserAdmin(userId);
+      response.data = promotedUser;
+      response.success = true;
+      response.message = "User promoted successfully!";
+      res.json(response);
+    }  else if (!isUpdatingSelf && isLeaderUser && isAdminUser) {
+      throw new Error(" User cannot be promoted to administrator ")
+    } else if (!isUpdatingSelf && !isAdminUser) {
+      throw new Error(" You are not allowed to change another user's ID ")
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: error.message || "Unable to complete the operation" });
+  }
 };

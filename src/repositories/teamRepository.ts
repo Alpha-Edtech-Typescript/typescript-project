@@ -119,3 +119,4 @@ export const updateTeam = async (teamId: string, newTeam: Partial<ITeam>): Promi
     throw new Error("Failed to update team.");
   }
 };
+

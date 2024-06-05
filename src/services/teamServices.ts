@@ -72,3 +72,29 @@ export const updateTeam = async (teamId: string, updates: Partial<ITeam>): Promi
     throw new Error(`Error updating team: ${error}`);
   }
 };
+
+//Parte nova do Murilo para testar
+export const addMember = async (team_id: string, user_id: string) => {
+  const user = await userRepository.getUserById(user_id);
+  if (!user) {
+    throw new Error("Usuário não encontrado.");
+  }
+
+  const team = await teamRepository.getTeamById(team_id);
+  if (!team) {
+    throw new Error("Equipe não encontrada.");
+  }
+
+  user.teamId = team.id;
+  await userRepository.updateUser(user);
+};
+
+export const removeMember = async (team_id: string, user_id: string) => {
+  const user = await userRepository.getUserById(user_id);
+  if (!user || user.teamId !== team_id) {
+    throw new Error("Usuário não encontrado na equipe.");
+  }
+
+  user.teamId = null;
+  await userRepository.updateUser(user);
+};

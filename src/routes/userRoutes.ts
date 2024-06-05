@@ -19,5 +19,6 @@ router.delete(
   adminOnly,
   userController.deleteUser,
 );
+router.patch("/:userId", auth.authenticateJWT, userController.updateUser);
 
 export default router;
